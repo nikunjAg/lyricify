@@ -3,6 +3,7 @@ import { gql } from '@apollo/client';
 export const GET_SONGS = gql`
 query GetSongs {
   songs {
+    __typename
     id
     title
   }    
@@ -16,9 +17,16 @@ mutation CreateSong($title: String!) {
     success
     message
     song {
+      __typename
       id
       title
     }
   }
+}
+`;
+
+export const NEW_SONG_FRAGMENT = gql`
+fragment NewSong on Song {
+  id
 }
 `;
