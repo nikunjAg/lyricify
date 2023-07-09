@@ -6,11 +6,18 @@ export const typeDef = `#graphql
     likes: Int
     content: String
   }
+
+  extend type Query {
+    lyrics: [Lyric!]!
+  }
 `;
 
 export const resolver = {
+  Query: {
+    lyrics: async () => await Lyric.find({}),
+  },
   Lyric: {
-    song: async (parentValue, args) => {
+    song: async (parentValue) => {
       const lyric = await Lyric.findById(parentValue.id).populate('song');
       return lyric.song;
     }

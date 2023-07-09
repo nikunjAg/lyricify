@@ -1,7 +1,10 @@
+import _ from 'lodash';
+
 import {
   Song, Lyric, Query,
-  QueryResolver, SongResolver, LyricResolver
+  SongResolver, LyricResolver,
+  Mutation,
 } from './types/index.js';
 
-export const typeDefs = [Song, Lyric, Query];
-export const resolvers = {...QueryResolver, ...SongResolver, ...LyricResolver};
+export const typeDefs = [Song, Lyric, Query, Mutation];
+export const resolvers = _.merge(SongResolver, LyricResolver);
