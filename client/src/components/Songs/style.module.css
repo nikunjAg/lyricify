@@ -1,0 +1,17 @@
+.songsList {
+  margin: 1rem 0rem;
+  padding: 0rem 1rem;
+}
+
+.songs {
+  margin: 1rem 0rem;
+}
+
+.song {
+  border: 1px solid #CCC;
+  border-radius: 4px;
+}
+
+.songs .song:not(:last-of-type) {
+  border-bottom: none;
+}
