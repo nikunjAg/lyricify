@@ -1,9 +1,9 @@
 import React from 'react';
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 
 import NewSong from '../../components/Songs/NewSong';
-import { CREATE_SONG, GET_SONGS, NEW_SONG_FRAGMENT } from '../../graphql/queries/song';
+import { CREATE_SONG, NEW_SONG_FRAGMENT } from '../../graphql/queries/song';
 
 const CreateSong = () => {
 
