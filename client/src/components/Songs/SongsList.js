@@ -1,8 +1,8 @@
 import React from 'react';
-import { IconButton, List, ListItem, ListItemText } from '@mui/material';
-import { Delete as DeleteIcon } from '@mui/icons-material';
+import { List} from '@mui/material';
 
 import classes from './style.module.css';
+import Song from './Song';
 
 const SongsList = (props) => {
 
@@ -21,17 +21,7 @@ const SongsList = (props) => {
       <List className={classes.songs} >
         {
           songs?.map(song => 
-            <ListItem
-              className={classes.song}
-              key={song.id}
-              secondaryAction={
-                <IconButton>
-                  <DeleteIcon />
-                </IconButton>
-              }
-            >
-              <ListItemText primary={song.title} />
-            </ListItem>
+            <Song song={song} key={song.id} />
           )
         }
       </List>

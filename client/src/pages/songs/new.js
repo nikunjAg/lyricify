@@ -3,7 +3,7 @@ import { useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 
 import NewSong from '../../components/Songs/NewSong';
-import { CREATE_SONG, NEW_SONG_FRAGMENT } from '../../graphql/queries/song';
+import { CREATE_SONG, SONG_FRAGMENT } from '../../graphql/queries/song';
 
 const CreateSong = () => {
 
@@ -26,7 +26,7 @@ const CreateSong = () => {
 
                 const newSongRef = cache.writeFragment({
                   data: addSong.song,
-                  fragment: NEW_SONG_FRAGMENT
+                  fragment: SONG_FRAGMENT
                 });
 
                 return [ ...oldSongs, newSongRef ];
@@ -36,7 +36,6 @@ const CreateSong = () => {
         }
       });
 
-      console.log('Awaited Res', res);
       if (res?.data?.addSong?.code === "200") {
         navigate("/songs", { replace: true });
       }

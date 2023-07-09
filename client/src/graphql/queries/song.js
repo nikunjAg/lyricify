@@ -10,6 +10,13 @@ query GetSongs {
 }
 `;
 
+export const SONG_FRAGMENT = gql`
+  fragment NewSong on Song {
+    id
+    title
+  }
+`;
+
 export const CREATE_SONG = gql`
 mutation CreateSong($title: String!) {
   addSong(title: $title) {
@@ -25,8 +32,18 @@ mutation CreateSong($title: String!) {
 }
 `;
 
-export const NEW_SONG_FRAGMENT = gql`
-fragment NewSong on Song {
-  id
-}
+export const DELETE_SONG = gql`
+  mutation DeleteSong($songId: String!) {
+    deleteSong(id: $songId) {
+      __typename
+      code
+      message
+      success
+      song {
+        __typename
+        id
+        title
+      }
+    }
+  }
 `;

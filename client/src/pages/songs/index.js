@@ -11,6 +11,7 @@ import classes from './songs.module.css';
 const Songs = () => {
 
   const { loading, error, data } = useQuery(GET_SONGS);
+
   const navigate = useNavigate();
 
   const addNewSongHandler = () => {
@@ -19,7 +20,11 @@ const Songs = () => {
 
   return (
     <React.Fragment>
-      <SongsList loading={loading} error={error} songs={data?.songs} />
+      <SongsList
+        loading={loading}
+        error={error}
+        songs={data?.songs}
+      />
       <Fab
         color="primary"
         aria-label="add"
