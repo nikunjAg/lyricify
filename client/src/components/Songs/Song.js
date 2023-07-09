@@ -4,7 +4,7 @@ import { Delete as DeleteIcon, WarningAmber as WarningIcon } from "@mui/icons-ma
 import { useMutation } from "@apollo/client";
 
 import classes from "./style.module.css";
-import { DELETE_SONG, SONG_FRAGMENT } from "../../graphql/queries/song";
+import { DELETE_SONG } from "../../graphql/queries/song";
 
 const Song = (props) => {
 
@@ -18,16 +18,8 @@ const Song = (props) => {
 				update: (cache, { data: { deleteSong } }) => {
 					cache.modify({
 						fields: {
-							songs: (oldSongs = []) => {
-								
-								return oldSongs.filter((songRef) => {
-									const song = cache.readFragment({
-										id: songRef.__ref,
-										fragment: SONG_FRAGMENT,
-									});
-									
-									return song.id !== deleteSong.song.id;
-								});
+							songs: (oldSongsRefs = [], { readField }) => {
+								return oldSongsRefs.filter(songRef => readField('id', songRef) !== deleteSong.song.id)
 							},
 						},
 					});

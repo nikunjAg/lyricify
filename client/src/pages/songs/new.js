@@ -22,14 +22,13 @@ const CreateSong = () => {
         update: (cache, { data: { addSong } }) => {
           cache.modify({
             fields: {
-              songs: (oldSongs = []) => {
-
-                const newSongRef = cache.writeFragment({
+              songs: (oldSongsRefs = []) => {
+                const songRef = cache.writeFragment({
                   data: addSong.song,
                   fragment: SONG_FRAGMENT
                 });
 
-                return [ ...oldSongs, newSongRef ];
+                return [songRef, ...oldSongsRefs];
               }
             }
           });
