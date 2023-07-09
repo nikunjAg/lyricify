@@ -1,3 +1,5 @@
+import { Lyric } from "../../models/index.js";
+
 export const typeDef = `#graphql
   type Lyric {
     song: Song
@@ -6,6 +8,11 @@ export const typeDef = `#graphql
   }
 `;
 
-// export const resolvers = {
-//   Qu
-// };
+export const resolver = {
+  Lyric: {
+    song: async (parentValue, args) => {
+      const lyric = await Lyric.findById(parentValue.id).populate('song');
+      return lyric.song;
+    }
+  }
+};

@@ -1,8 +1,4 @@
-import { Song, Lyric, Query } from './types/index.js';
+import { Song, Lyric, Query, QueryResolver, SongResolver, LyricResolver } from './types/index.js';
 
 export const typeDefs = [Song, Lyric, Query];
-export const resolvers = {
-  Query: {
-    songs: () => "Hello"
-  }
-};
+export const resolvers = {...QueryResolver, ...SongResolver, ...LyricResolver};

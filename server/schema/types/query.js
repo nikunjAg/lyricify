@@ -1,6 +1,15 @@
+import { Song, Lyric } from '../../models/index.js';
+
 export const typeDef = `#graphql
   type Query {
-    songs: String
-    lyrics: String
+    songs: [Song]
+    lyrics: [Lyric]
   }
 `;
+
+export const resolver = {
+  Query: {
+    songs: async () => await Song.find({}),
+    lyrics: async () => await Lyric.find({}),
+  }
+}
