@@ -8,3 +8,12 @@ query GetSongs {
   }    
 }
 `;
+
+export const CREATE_SONG = gql`
+mutation CreateSong($title: String!) {
+  song(title: $title) {
+    id
+    title
+  }
+}
+`;

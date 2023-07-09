@@ -1,12 +1,16 @@
 import React from 'react'
-import { Outlet } from 'react-router-dom';
+import { Outlet, Link } from 'react-router-dom';
 
 import classes from './Layout.module.css';
 
 const Layout = () => {
   return (
     <React.Fragment>
-      <header className={classes.header} >Lyricify</header>
+      <header className={classes.header} >
+        <div className={classes.logo} >
+          <Link to='/songs' >Lyricify</Link>
+        </div>
+      </header>
       <main>
         <Outlet />
       </main>
