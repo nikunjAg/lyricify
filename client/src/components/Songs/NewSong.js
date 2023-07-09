@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Box, Button, TextField } from '@mui/material';
+import { Alert, AlertTitle, Box, Button, CircularProgress, TextField } from '@mui/material';
 
 import classes from './style.module.css';
 
-const NewSong = ({ onCreate }) => {
+const NewSong = ({ loading, error, onCreate }) => {
 
   const [title, setTitle] = useState("");
 
@@ -19,6 +19,15 @@ const NewSong = ({ onCreate }) => {
 
   return (
     <Box component="div" className={classes.createSongWrapper} >
+
+      {
+        error && 
+        <Alert severity="error" className='error-alert' >
+          <AlertTitle>Error</AlertTitle>
+          {error.message}
+        </Alert>
+      }
+
       <h3>Create a Song</h3>
       <form onSubmit={formSubmitHandler} >
         <TextField
@@ -29,7 +38,13 @@ const NewSong = ({ onCreate }) => {
           onChange={e => setTitle(e.target.value)}
         />
         <br />
-        <Button type='submit' variant='contained' disabled={titleNotValid} >Create</Button>
+        <Button
+          type='submit'
+          variant='contained'
+          disabled={titleNotValid || loading}
+        >
+          { loading ? <CircularProgress size={24} /> : "Create" }
+        </Button>
       </form>
     </Box>
   )

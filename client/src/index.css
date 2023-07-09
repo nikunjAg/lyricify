@@ -10,3 +10,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.error-alert {
+  margin-bottom: 1rem;
+}
