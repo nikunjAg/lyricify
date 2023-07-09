@@ -17,9 +17,17 @@ export const typeDef = `#graphql
     message: String!
     song: Song
   }
+  
+  type DeleteSongMutationResponse implements MutationResponse {
+    code: String!
+    success: Boolean!
+    message: String!
+    song: Song
+  }
 
   extend type Mutation {
     addSong(title: String!): CreateSongMutationResponse
+    deleteSong(id: String!): DeleteSongMutationResponse
   }
 `;
 
@@ -36,12 +44,21 @@ export const resolver = {
         message: "Song created successfully",
         song
       };
+    },
+    deleteSong: async (_, { id }) => {
+      const song = await Song.findByIdAndRemove(id);
+      return {
+        code: "200",
+        success: true,
+        message: "Song deleted successfully",
+        song
+      };
     }
   },
   Song: {
     lyrics: async (parentValue) => {
       const song = await Song.findById(parentValue.id).populate('lyrics');
-      return song.lyrics;
+      return song?.lyrics;
     }
   }
 };
