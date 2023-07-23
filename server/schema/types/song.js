@@ -9,6 +9,7 @@ export const typeDef = `#graphql
 
   extend type Query {
     songs: [Song!]!
+    song(id: String!): Song
   }
   
   type CreateSongMutationResponse implements MutationResponse {
@@ -34,6 +35,7 @@ export const typeDef = `#graphql
 export const resolver = {
   Query: {
     songs: async () => Song.find({}),
+    song: async (_, { id }) => Song.findById(id),
   },
   Mutation: {
     addSong: async (_, { title }) => {

@@ -21,6 +21,22 @@ LyricSchema.statics.like = function(id) {
     });
 }
 
+LyricSchema.pre('findOneAndDelete', async function(next) {
+  const doc = await this.model.findOne(this.getFilter());
+  
+  const { song: songId, _id: lyricId } = doc;
+
+  const Song = mongoose.model('song');
+
+  const songDoc = await Song.findById(songId.toString());
+
+  songDoc.lyrics = songDoc.lyrics.filter(lyric => lyric.toString() !== lyricId.toString());
+
+  await songDoc.save();
+
+  next();
+});
+
 const Lyric = mongoose.model('lyric', LyricSchema);
 
 export default Lyric;
