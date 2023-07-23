@@ -10,12 +10,28 @@
 }
 
 .song {
-  border: 1px solid #CCC;
+  cursor: pointer;
+  color: var(--text-color);
+  text-decoration: none;
+  display: block;
+  margin-top: 4px;
+}
+
+.song > li {
+  background-color: var(--background-base);
   border-radius: 4px;
 }
 
-.songs .song:not(:last-of-type) {
+.song > li:hover {
+  background-color: var(--background-base-2);
+}
+
+.song:not(:last-of-type) > li {
   border-bottom: none;
+}
+
+.songActionIcon {
+  color: var(--text-color);
 }
 
 /* Create Song */
@@ -33,4 +49,12 @@
   width: 70%;
   max-width: 600px;
   margin-bottom: 1rem;
+}
+
+/* Song Details */
+.songDetail {
+  margin: 1rem;
+  padding: 1rem;
+  background-color: var(--background-base);
+  border-radius: 8px;
 }

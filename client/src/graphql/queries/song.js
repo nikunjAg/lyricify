@@ -10,6 +10,29 @@ query GetSongs {
 }
 `;
 
+export const COMPLETE_SONG_FRAGMENT = gql`
+  fragment CompleteSongFragment on Song {
+    __typename
+    id
+    title
+    lyrics {
+      __typename
+      id
+      content
+      likes
+    }
+  }
+`;
+
+export const SONG_BY_ID = gql`
+  ${COMPLETE_SONG_FRAGMENT}
+  query GetSongById($songId: String!) {
+    song(id: $songId) {
+      ...CompleteSongFragment
+    }
+  }
+`;
+
 export const SONG_FRAGMENT = gql`
   fragment NewSong on Song {
     id

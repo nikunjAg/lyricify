@@ -7,8 +7,10 @@ const Layout = () => {
   return (
     <React.Fragment>
       <header className={classes.header} >
-        <div className={classes.logo} >
-          <Link to='/songs' >Lyricify</Link>
+        <div>
+          <div className={classes.logo} >
+            <Link to='/songs' >Lyricify</Link>
+          </div>
         </div>
       </header>
       <main>

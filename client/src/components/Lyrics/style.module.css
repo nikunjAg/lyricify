@@ -1,0 +1,37 @@
+/* LyricsList */
+.lyricsList {
+    margin: 1rem 0;
+}
+
+
+/* Lyric Item */
+.lyricItem {
+    background-color: var(--background-base-2);
+    border-radius: 4px;
+}
+
+.lyricItem:hover {
+    background-color: var(--background-base-3);
+}
+
+.lyricsList .lyricItem:not(:last-of-type) {
+    border-bottom: none;
+}
+
+/* Lyric Create */
+.lyricCreateForm {
+    margin: 1rem 0rem;   
+    width: 600px;
+    max-width: 90%;
+    display: flex;
+    flex-direction: column;
+}
+
+.lyricCreateForm > div {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.lyricCreateForm > button {
+    margin-left: auto;
+}
