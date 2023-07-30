@@ -1,4 +1,4 @@
-import { Lyric } from "../../models/index.js";
+import { Lyric, Song } from "../../models/index.js";
 
 export const typeDef = `#graphql
   type Lyric {
@@ -12,7 +12,14 @@ export const typeDef = `#graphql
     lyrics: [Lyric!]!
   }
 
-  type DeleteSongMutationResponse implements MutationResponse {
+  type AddLyricMutationResponse implements MutationResponse {
+    code: String!
+    success: Boolean!
+    message: String!
+    lyric: Lyric
+  }
+
+  type DeleteLyricMutationResponse implements MutationResponse {
     code: String!
     success: Boolean!
     message: String!
@@ -20,7 +27,8 @@ export const typeDef = `#graphql
   }
 
   extend type Mutation {
-    deleteLyric(id: String!): DeleteSongMutationResponse
+    addLyric(content: String!, songId: String!): AddLyricMutationResponse
+    deleteLyric(id: String!): DeleteLyricMutationResponse
   }
 `;
 
@@ -29,6 +37,23 @@ export const resolver = {
     lyrics: async () => await Lyric.find({}),
   },
   Mutation: {
+    addLyric: async (_, { content, songId }) => {
+      // const lyric = new Lyric({
+      //   likes: 0,
+      //   content,
+      //   song: songId
+      // });
+
+      // const lyricDoc = await lyric.save();
+      const [lyric] = await Song.addLyric(songId, content);
+
+      return {
+        code: "201",
+        success: true,
+        message: "Lyric created successfully",
+        lyric,
+      }
+    },
     deleteLyric: async (_, { id }) => {
       try {
         const lyric = await Lyric.findOneAndDelete({ _id: id });
