@@ -11,14 +11,15 @@ const LyricSchema = new Schema({
   content: { type: String }
 });
 
-LyricSchema.statics.like = function(id) {
+LyricSchema.statics.like = async function(id) {
   const Lyric = mongoose.model('lyric');
 
-  return Lyric.findById(id)
-    .then(lyric => {
-      ++lyric.likes;
-      return lyric.save();
-    });
+  return await Lyric.findByIdAndUpdate(id, {
+    $inc: {
+      likes: 1,
+    }
+  },
+  { new: true });
 }
 
 LyricSchema.pre('findOneAndDelete', async function(next) {
@@ -26,14 +27,8 @@ LyricSchema.pre('findOneAndDelete', async function(next) {
   
   const { song: songId, _id: lyricId } = doc;
 
-  const Song = mongoose.model('song');
-
-  const songDoc = await Song.findById(songId.toString());
-
-  songDoc.lyrics = songDoc.lyrics.filter(lyric => lyric.toString() !== lyricId.toString());
-
-  await songDoc.save();
-
+  await mongoose.model('song').removeLyric(songId, lyricId);
+  
   next();
 });
 

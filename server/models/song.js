@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+
 const Schema = mongoose.Schema;
 
 const SongSchema = new Schema({
@@ -23,6 +24,18 @@ SongSchema.statics.addLyric = function(id, content) {
       return Promise.all([lyric.save(), song.save()])
         .then(([lyric, song]) => [lyric, song]);
     });
+}
+
+SongSchema.statics.removeLyric = async function(id, lyricId) {
+  const res = await this.findByIdAndUpdate(id, {
+    $pull: {
+      lyrics: new mongoose.Types.ObjectId(lyricId)
+    }
+  }, {
+    new: true,
+  });
+
+  return res;
 }
 
 SongSchema.statics.findLyrics = function(id) {

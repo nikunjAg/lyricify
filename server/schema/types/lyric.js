@@ -26,9 +26,17 @@ export const typeDef = `#graphql
     lyric: Lyric
   }
 
+  type LikeLyricMutationResponse implements MutationResponse {
+    code: String!
+    success: Boolean!
+    message: String!
+    lyric: Lyric
+  }
+
   extend type Mutation {
     addLyric(content: String!, songId: String!): AddLyricMutationResponse
     deleteLyric(id: String!): DeleteLyricMutationResponse
+    likeLyric(id: String!): LikeLyricMutationResponse
   }
 `;
 
@@ -38,13 +46,6 @@ export const resolver = {
   },
   Mutation: {
     addLyric: async (_, { content, songId }) => {
-      // const lyric = new Lyric({
-      //   likes: 0,
-      //   content,
-      //   song: songId
-      // });
-
-      // const lyricDoc = await lyric.save();
       const [lyric] = await Song.addLyric(songId, content);
 
       return {
@@ -70,6 +71,16 @@ export const resolver = {
           success: false,
           message: "Somehting went wrong!!",
         }
+      }
+    },
+    likeLyric: async (_, { id }) => {
+      const res = await Lyric.like(id);
+      console.log(res);
+      return {
+        code: "200",
+        success: true,
+        message: "Lyric liked successfully",
+        lyric: res,
       }
     }
   },
