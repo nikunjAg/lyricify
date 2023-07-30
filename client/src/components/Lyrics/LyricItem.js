@@ -4,13 +4,14 @@ import { Delete as DeleteIcon, WarningAmber as WarningIcon, FavoriteBorder as Li
 
 import classes from './style.module.css';
 import { useMutation } from "@apollo/client";
-import { DELETE_LYRIC_BY_ID } from "../../graphql/queries/lyric";
+import { DELETE_LYRIC_BY_ID, LIKE_LYRIC } from "../../graphql/queries/lyric";
 import { SONG_BY_ID } from "../../graphql/queries/song";
 
 const LyricItem = (props) => {
 
 	const { lyric, songId } = props;
 	const [deleteLyricById, { loading, error }] = useMutation(DELETE_LYRIC_BY_ID);
+	const [likeLyricById, { loading: likeLoading, error: likeError }] = useMutation(LIKE_LYRIC);
 
 
 	const playUtterance = (strs, i) => {
@@ -64,7 +65,35 @@ const LyricItem = (props) => {
 		playText(lyric.content);
 	}
 
-	const likeLyricHandler = async () => {
+	const likeLyricHandler = async (event) => {
+		event.stopPropagation();
+		const lyricId = lyric.id;
+		try {
+			await likeLyricById({
+				variables: { lyricId },
+				update: (cache, { data: { likeLyric: { lyric: updatedLyric } } }) => {
+					cache.updateQuery(
+						{query: SONG_BY_ID, variables: { songId }, },
+						data => {
+
+							const { song: oldSong } = data;
+							const updatedLyrics = (
+								oldSong.lyrics || []
+							).map(lyric => lyric.id !== lyricId ? lyric : updatedLyric);
+
+							return {
+								song: {
+									...oldSong,
+									lyrics: updatedLyrics,
+								}
+							};
+						},
+					);
+				}
+			});
+		} catch (error) {
+			console.log(error);
+		}
 
 	}
 
@@ -114,7 +143,9 @@ const LyricItem = (props) => {
 						onClick={likeLyricHandler}
 						color="primary"
 					>
-						<LikeIcon />
+						{!likeError && !likeLoading && <LikeIcon color="primary" />}
+						{likeLoading && <CircularProgress size={24} />}
+						{likeError && <WarningIcon titleAccess={likeError.message} />}
 					</IconButton>
 					<IconButton
 						onClick={deleteLyricHandler}

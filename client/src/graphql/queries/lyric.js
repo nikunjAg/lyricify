@@ -36,10 +36,20 @@ export const CREATE_LYRIC = gql`
 				id
 				likes
 				content
-				song {
-					id
-					title
-				}
+			}
+		}
+	}
+`;
+
+export const LIKE_LYRIC = gql`
+	mutation likeLyric($lyricId: String!) {
+		likeLyric(id: $lyricId) {
+			code
+			success
+			message
+			lyric {
+				id
+				likes
 			}
 		}
 	}

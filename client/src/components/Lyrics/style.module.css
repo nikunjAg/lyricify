@@ -9,6 +9,7 @@
     background-color: var(--background-base-2);
     border-radius: 4px;
     margin-bottom: .25rem;
+    padding-right: 6rem;
 }
 
 .lyricItem:hover {
