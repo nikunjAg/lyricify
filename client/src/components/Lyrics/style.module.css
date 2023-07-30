@@ -8,6 +8,7 @@
 .lyricItem {
     background-color: var(--background-base-2);
     border-radius: 4px;
+    margin-bottom: .25rem;
 }
 
 .lyricItem:hover {

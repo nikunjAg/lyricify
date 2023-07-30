@@ -25,3 +25,22 @@ export const GET_LYRIC_BY_ID = gql`
 		}
 	}
 `;
+
+export const CREATE_LYRIC = gql`
+	mutation createLyric($content: String!, $songId: String!) {
+		addLyric(content: $content, songId: $songId) {
+			code
+			success
+			message
+			lyric {
+				id
+				likes
+				content
+				song {
+					id
+					title
+				}
+			}
+		}
+	}
+`;

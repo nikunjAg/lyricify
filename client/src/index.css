@@ -22,7 +22,6 @@ body {
 
 body #root {
   display: flex;
-  height: 100vh;
   flex-direction: column;
   align-items: stretch;
 
