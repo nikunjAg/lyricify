@@ -14,7 +14,7 @@ const LyricSchema = new Schema({
 LyricSchema.statics.like = async function(id) {
   const Lyric = mongoose.model('lyric');
 
-  return await Lyric.findByIdAndUpdate(id, {
+  return Lyric.findByIdAndUpdate(id, {
     $inc: {
       likes: 1,
     }

@@ -9,7 +9,7 @@ export const typeDef = `#graphql
   }
 
   extend type Query {
-    lyrics: [Lyric!]!
+    lyric(id: String!): Lyric
   }
 
   type AddLyricMutationResponse implements MutationResponse {
@@ -42,7 +42,7 @@ export const typeDef = `#graphql
 
 export const resolver = {
   Query: {
-    lyrics: async () => await Lyric.find({}),
+    lyric: async (_, { id }) => await Lyric.findById(id),
   },
   Mutation: {
     addLyric: async (_, { content, songId }) => {
