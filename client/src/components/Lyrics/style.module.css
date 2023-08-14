@@ -37,3 +37,44 @@
 .lyricCreateForm > button {
     margin-left: auto;
 }
+
+/* Complete Lyric Detail */
+.completeLyric {
+    margin: 1rem;
+    padding: 1rem;
+    background-color: var(--background-base);
+    border-radius: 8px;
+}
+
+.songHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.userLink {
+    font-size: 12px;
+    color: var(--text-color-2);
+    text-decoration: none;
+}
+
+.userLink:hover {
+    text-decoration: underline;
+}
+
+.lyricContent {
+    margin: 2rem 1rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.lyricContent > p {
+    font-size: 14px;
+    font-style: italic;
+}
+
+.lyricContent > .userLink {
+    margin-top: .5rem;
+}

@@ -16,12 +16,29 @@ export const DELETE_LYRIC_BY_ID = gql`
 	}
 `;
 
+export const GET_COMPLETE_LYRIC_BY_ID = gql`
+	query GetCompleteLyricById($lyricId: String!) {
+		lyric(id: $lyricId) {
+			__typename
+			id
+			content
+			likes
+			song {
+				__typename
+				id
+				title
+			}
+		}
+	}
+`;
+
 export const GET_LYRIC_BY_ID = gql`
 	query GetLyricById($lyricId: String!) {
 		lyric(id: $lyricId) {
 			__typename
 			id
 			content
+			likes
 		}
 	}
 `;
@@ -50,6 +67,7 @@ export const LIKE_LYRIC = gql`
 			lyric {
 				id
 				likes
+				content
 			}
 		}
 	}

@@ -5,6 +5,7 @@ import Layout from './components/Layout/Layout';
 import Songs from './pages/songs';
 import CreateSong from './pages/songs/new';
 import SongDetailPage from './pages/songs/detail';
+import LyricDetail from './pages/lyric/detail';
 
 const Router = () => {
   return (
@@ -13,6 +14,7 @@ const Router = () => {
         <Route path='/songs' element={<Songs />} />
         <Route path='/songs/new' element={<CreateSong />} />
         <Route path='/songs/:id' element={<SongDetailPage />} />
+        <Route path='/songs/:songId/lyrics/:lyricId' element={<LyricDetail />} />
         <Route path='*' element={<Navigate to="/songs" replace />} />
       </Route>
     </Routes>
