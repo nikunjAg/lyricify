@@ -121,8 +121,8 @@ const LyricItem = (props) => {
 						color="primary"
 						title="Like"
 					>
+						<Typography variant="body2" mr={.5} >{lyric.likes}</Typography>
 						<LikeIcon color="primary" />
-						<Typography variant="body2" ml={.5} >{lyric.likes}</Typography>
 					</IconButton>
 					<IconButton
 						onClick={deleteLyricHandler}
