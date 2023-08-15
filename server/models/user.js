@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 const Schema = mongoose.Schema;
 
@@ -24,6 +25,31 @@ const userSchema = new Schema({
         ref: 'lyric',
     }],
 });
+
+// Hashing the password before 'save'
+userSchema.pre('save', function(next) {
+    const user = this;
+    if (!user.isModified('password')) return next();
+
+    bcrypt.genSalt(10, (err, salt) => {
+        if (err) return next(err);
+
+        bcrypt.hash(user.password, salt, (err, hashedPassword) => {
+            if (err) return next(err);
+
+            user.password = hashedPassword;
+            next();
+        });
+    });
+});
+
+
+// Comparing plain and hashed passwords
+userSchema.methods.comparePassword = function(plainPassword, cb) {
+    bcrypt.compare(plainPassword, this.password, (err, result) => {
+        cb(err, result);
+    });
+};
 
 const User = mongoose.model('user', userSchema);
 
