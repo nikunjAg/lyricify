@@ -5,7 +5,11 @@ const Schema = mongoose.Schema;
 const LyricSchema = new Schema({
   song: {
     type: Schema.Types.ObjectId,
-    ref: 'song'
+    ref: 'song',
+  },
+  createdBy: {
+    type: Schema.Types.ObjectId,
+    ref: 'user',
   },
   likes: { type: Number, default: 0 },
   content: { type: String }
