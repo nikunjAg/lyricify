@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const SongSchema = new Schema({
   title: { type: String },
-  user: {
+  createdBy: {
     type: Schema.Types.ObjectId,
     ref: 'user',
   },
