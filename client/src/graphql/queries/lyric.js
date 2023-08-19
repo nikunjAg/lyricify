@@ -23,6 +23,7 @@ export const GET_COMPLETE_LYRIC_BY_ID = gql`
 			id
 			content
 			likes
+			isLiked
 			song {
 				__typename
 				id
@@ -39,6 +40,7 @@ export const GET_LYRIC_BY_ID = gql`
 			id
 			content
 			likes
+			isLiked
 		}
 	}
 `;
@@ -68,6 +70,7 @@ export const LIKE_LYRIC = gql`
 				id
 				likes
 				content
+				isLiked
 			}
 		}
 	}
