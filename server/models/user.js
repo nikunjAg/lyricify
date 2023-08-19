@@ -26,6 +26,30 @@ const userSchema = new Schema({
     }],
 });
 
+userSchema.statics.removeSong = async function(userId, songId) {
+    const updatedUser = await this.findByIdAndUpdate(userId, {
+        $pull: {
+            songs: new mongoose.Types.ObjectId(songId),
+        }
+    }, {
+        new: true,
+    });
+
+    return updatedUser;
+};
+
+userSchema.statics.removeLyric = async function(userId, lyricId) {
+    const updatedUser = await this.findByIdAndUpdate(userId, {
+        $pull: {
+            lyrics: new mongoose.Types.ObjectId(lyricId),
+        }
+    }, {
+        new: true,
+    });
+
+    return updatedUser;
+};
+
 // Hashing the password before 'save'
 userSchema.pre('save', function(next) {
     const user = this;

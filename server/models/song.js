@@ -44,6 +44,16 @@ SongSchema.statics.findLyrics = function(id) {
     .then(song => song.lyrics);
 }
 
+SongSchema.pre('findOneAndDelete', async function(next) {
+  const doc = await this.model.findOne(this.getFilter());
+
+  const { createdBy, _id: songId } = doc;
+
+  await mongoose.model('user').removeSong(createdBy, songId);
+
+  next();
+});
+
 const Song = mongoose.model('song', SongSchema);
 
 export default Song;

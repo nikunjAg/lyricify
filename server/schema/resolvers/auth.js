@@ -13,8 +13,16 @@ async function signup(_, { name, email, password }) {
             token,
             user,
         };
+
     } catch (error) {
-        throw new GraphQLError(error.message || 'Unable to create user');
+        throw new GraphQLError(error.message || 'Unable to create user', {
+            extensions: {
+                code: 'INTERNAL_SERVER_ERROR',
+                http: {
+                    status: 500,
+                }
+            }
+        });
     }
 }
 
@@ -31,7 +39,14 @@ async function login(_, { email, password }) {
             user,
         };
     } catch (error) {
-        throw new GraphQLError(error.message || 'Unable to login user');
+        throw new GraphQLError(error.message || 'Unable to login user', {
+            extensions: {
+                code: 'INTERNAL_SERVER_ERROR',
+                http: {
+                    status: 500,
+                }
+            }
+        });
     }
 }
 
