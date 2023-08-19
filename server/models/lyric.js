@@ -19,8 +19,14 @@ LyricSchema.statics.likeDislike = async function(userId, id) {
   const Lyric = mongoose.model('lyric');
 
   return Lyric.findByIdAndUpdate(id, {
-    $addToSet: {
-      likedBy: userId,
+    $set: {
+      likedBy: {
+        $cond: [
+          {$in: [userId, "$likedBy"]},
+          {$setDifference: ["$likedBy", [userId]]},
+          {$concatArrays: ["$likedBy", [userId]]}
+        ]
+      }
     }
   },
   { new: true });

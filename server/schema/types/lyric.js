@@ -3,9 +3,10 @@ import { Lyric, Song } from "../../models/index.js";
 
 export const typeDef = `#graphql
   type Lyric {
-    id: String!
+    id: ID!
     song: Song
     likes: Int
+    isLiked: Boolean
     content: String!
   }
 
@@ -95,7 +96,7 @@ export const resolver = {
         }},
       });
 
-      const res = await Lyric.like(id);
+      const res = await Lyric.likeDislike(user.id, id);
       console.log(res);
       return {
         code: "200",
@@ -108,6 +109,9 @@ export const resolver = {
   Lyric: {
     likes: (parentValue) => {
       return parentValue.likedBy.length;
+    },
+    isLiked: (parentValue, _, { user }) => {
+      return parentValue.likedBy.includes(user?.id);
     },
     song: async (parentValue) => {
       const lyric = await Lyric.findById(parentValue.id).populate('song');
