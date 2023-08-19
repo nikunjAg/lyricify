@@ -26,6 +26,14 @@ const userSchema = new Schema({
     }],
 });
 
+userSchema.statics.addSong = async function(userId, songId) {
+    await this.findOneAndUpdate({ _id: userId }, {
+        $addToSet: {
+            songs: songId,
+        }
+    });
+};
+
 userSchema.statics.removeSong = async function(userId, songId) {
     const updatedUser = await this.findByIdAndUpdate(userId, {
         $pull: {
@@ -36,6 +44,14 @@ userSchema.statics.removeSong = async function(userId, songId) {
     });
 
     return updatedUser;
+};
+
+userSchema.statics.addLyric = async function(userId, lyricId) {
+    await this.findOneAndUpdate({ _id: userId }, {
+        $addToSet: {
+            lyrics: lyricId,
+        }
+    });
 };
 
 userSchema.statics.removeLyric = async function(userId, lyricId) {

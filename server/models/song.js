@@ -14,16 +14,21 @@ const SongSchema = new Schema({
   }]
 });
 
-SongSchema.statics.addLyric = function(id, createdBy, content) {
+SongSchema.statics.addLyric = async function(id, createdBy, content) {
   const Lyric = mongoose.model('lyric');
+  
+  const song = await this.findById(id);
+  
+  const lyric = new Lyric({ content, song, createdBy });
+  await lyric.save();
 
-  return this.findById(id)
-    .then(song => {
-      const lyric = new Lyric({ content, song, createdBy })
-      song.lyrics.push(lyric)
-      return Promise.all([lyric.save(), song.save()])
-        .then(([lyric, song]) => [lyric, song]);
-    });
+  song.lyrics.push(lyric);
+  await Promise.all([
+    mongoose.model('user').addLyric(createdBy, lyric.id),
+    song.save(),
+  ]);
+  
+  return [lyric, song];
 }
 
 SongSchema.statics.removeLyric = async function(id, lyricId) {

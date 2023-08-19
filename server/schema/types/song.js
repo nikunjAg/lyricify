@@ -1,5 +1,5 @@
 import { GraphQLError } from "graphql";
-import { Song } from "../../models/index.js";
+import { Song, User } from "../../models/index.js";
 
 export const typeDef = `#graphql
   type Song {
@@ -48,6 +48,8 @@ export const resolver = {
       });
 
       const song = await (new Song({ title, createdBy: user.id }).save());
+      await User.addSong(user.id, song.id);
+
       return {
         code: "200",
         success: true,
