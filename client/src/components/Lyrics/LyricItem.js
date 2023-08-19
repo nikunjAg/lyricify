@@ -1,6 +1,6 @@
 import React from "react";
 import { CircularProgress, IconButton, ListItem, ListItemText, Typography } from "@mui/material";
-import { Delete as DeleteIcon, WarningAmber as WarningIcon, FavoriteBorder as LikeIcon } from "@mui/icons-material";
+import { Delete as DeleteIcon, WarningAmber as WarningIcon, FavoriteBorder as LikeIcon, Favorite as LikeFilled } from "@mui/icons-material";
 import { useNavigate } from 'react-router-dom';
 
 import classes from './style.module.css';
@@ -25,6 +25,7 @@ const LyricItem = (props) => {
 		event.stopPropagation();
 		const lyricId = lyric.id;
 		const prevLikes = lyric.likes;
+		const inc = lyric.isLiked ? -1 : 1;
 
 		try {
 			await likeLyricById({
@@ -37,7 +38,7 @@ const LyricItem = (props) => {
 						success: true,
 						lyric: {
 							id: lyricId,
-							likes: prevLikes + 1,
+							likes: prevLikes + inc,
 							content: lyric.content,
 							__typename: "Lyric",
 						},
@@ -108,7 +109,7 @@ const LyricItem = (props) => {
 			console.log(error);
 		}
 	};
-
+	console.log(lyric)
 	return (
 		<ListItem
 			key={lyric.id}
@@ -121,8 +122,9 @@ const LyricItem = (props) => {
 						color="primary"
 						title="Like"
 					>
-						<Typography variant="body2" mr={.5} >{lyric.likes}</Typography>
-						<LikeIcon color="primary" />
+						<Typography mr={.5} fontSize={12} >{lyric.likes}</Typography>
+						{!lyric.isLiked && <LikeIcon color="primary" />}
+						{lyric.isLiked && <LikeFilled sx={{ color: '#d16477' }} />}
 					</IconButton>
 					<IconButton
 						onClick={deleteLyricHandler}

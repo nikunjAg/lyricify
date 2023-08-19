@@ -17,19 +17,17 @@ const LyricSchema = new Schema({
 
 LyricSchema.statics.likeDislike = async function(userId, id) {
   const Lyric = mongoose.model('lyric');
+  
+  const lyric = await Lyric.findById(id);
 
-  return Lyric.findByIdAndUpdate(id, {
-    $set: {
-      likedBy: {
-        $cond: [
-          {$in: [userId, "$likedBy"]},
-          {$setDifference: ["$likedBy", [userId]]},
-          {$concatArrays: ["$likedBy", [userId]]}
-        ]
-      }
-    }
-  },
-  { new: true });
+  const updatedLyrics = lyric.likedBy.filter(id => id.toString() !== userId);
+  if (updatedLyrics.length === lyric.likedBy.length) {
+    updatedLyrics.push(userId);
+  }
+
+  lyric.likedBy = updatedLyrics;
+
+  return await lyric.save();
 }
 
 LyricSchema.pre('findOneAndDelete', async function(next) {

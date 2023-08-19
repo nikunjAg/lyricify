@@ -20,6 +20,7 @@ export const COMPLETE_SONG_FRAGMENT = gql`
       id
       content
       likes
+      isLiked
     }
   }
 `;

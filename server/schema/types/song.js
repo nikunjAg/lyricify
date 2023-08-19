@@ -47,7 +47,7 @@ export const resolver = {
         }},
       });
 
-      const song = await (new Song({ title }).save());
+      const song = await (new Song({ title, createdBy: user.id }).save());
       return {
         code: "200",
         success: true,

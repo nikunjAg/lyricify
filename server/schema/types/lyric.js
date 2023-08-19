@@ -55,7 +55,7 @@ export const resolver = {
         }},
       });
 
-      const [lyric] = await Song.addLyric(songId, content);
+      const [lyric] = await Song.addLyric(songId, user.id, content);
 
       return {
         code: "201",
@@ -72,7 +72,7 @@ export const resolver = {
           }},
         });
 
-        const lyric = await Lyric.findOneAndDelete({ _id: id });
+        const lyric = await Lyric.findOneAndDelete({ _id: id, createdBy: user.id });
         return {
           code: "200",
           success: true,
