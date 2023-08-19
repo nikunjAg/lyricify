@@ -1,3 +1,4 @@
+import { GraphQLError } from "graphql";
 import { Song } from "../../models/index.js";
 
 export const typeDef = `#graphql
@@ -38,7 +39,14 @@ export const resolver = {
     song: async (_, { id }) => Song.findById(id),
   },
   Mutation: {
-    addSong: async (_, { title }) => {
+    addSong: async (_, { title }, { user }) => {
+      
+      if (!user) throw new GraphQLError("Not Authenticated", {
+        extensions: { code: 'UNAUTHENTICATED', http: {
+          status: 401,
+        }},
+      });
+
       const song = await (new Song({ title }).save());
       return {
         code: "200",
@@ -47,8 +55,15 @@ export const resolver = {
         song
       };
     },
-    deleteSong: async (_, { id }) => {
-      const song = await Song.findByIdAndRemove(id);
+    deleteSong: async (_, { id }, { user }) => {
+
+      if (!user) throw new GraphQLError("Not Authenticated", {
+        extensions: { code: 'UNAUTHENTICATED', http: {
+          status: 401,
+        }},
+      });
+
+      const song = await Song.findOneAndDelete({ _id: id, createdBy: user?.id });
       return {
         code: "200",
         success: true,

@@ -11,16 +11,16 @@ const LyricSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'user',
   },
-  likes: { type: Number, default: 0 },
+  likedBy: [{ type: Schema.Types.ObjectId, ref: 'user'}],
   content: { type: String }
 });
 
-LyricSchema.statics.like = async function(id) {
+LyricSchema.statics.likeDislike = async function(userId, id) {
   const Lyric = mongoose.model('lyric');
 
   return Lyric.findByIdAndUpdate(id, {
-    $inc: {
-      likes: 1,
+    $addToSet: {
+      likedBy: userId,
     }
   },
   { new: true });
@@ -29,9 +29,10 @@ LyricSchema.statics.like = async function(id) {
 LyricSchema.pre('findOneAndDelete', async function(next) {
   const doc = await this.model.findOne(this.getFilter());
   
-  const { song: songId, _id: lyricId } = doc;
+  const { song: songId, _id: lyricId, createdBy } = doc;
 
   await mongoose.model('song').removeLyric(songId, lyricId);
+  await mongoose.model('user').removeLyric(createdBy, lyricId);
   
   next();
 });

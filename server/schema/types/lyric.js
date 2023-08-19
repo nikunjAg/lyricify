@@ -1,3 +1,4 @@
+import { GraphQLError } from "graphql";
 import { Lyric, Song } from "../../models/index.js";
 
 export const typeDef = `#graphql
@@ -45,7 +46,14 @@ export const resolver = {
     lyric: async (_, { id }) => await Lyric.findById(id),
   },
   Mutation: {
-    addLyric: async (_, { content, songId }) => {
+    addLyric: async (_, { content, songId }, { user }) => {
+
+      if (!user) throw new GraphQLError("Not Authenticated", {
+        extensions: { code: 'UNAUTHENTICATED', http: {
+          status: 401,
+        }},
+      });
+
       const [lyric] = await Song.addLyric(songId, content);
 
       return {
@@ -55,8 +63,14 @@ export const resolver = {
         lyric,
       }
     },
-    deleteLyric: async (_, { id }) => {
+    deleteLyric: async (_, { id }, { user }) => {
       try {
+        if (!user) throw new GraphQLError("Not Authenticated", {
+          extensions: { code: 'UNAUTHENTICATED', http: {
+            status: 401,
+          }},
+        });
+
         const lyric = await Lyric.findOneAndDelete({ _id: id });
         return {
           code: "200",
@@ -73,7 +87,14 @@ export const resolver = {
         }
       }
     },
-    likeLyric: async (_, { id }) => {
+    likeLyric: async (_, { id }, { user }) => {
+
+      if (!user) throw new GraphQLError("Not Authenticated", {
+        extensions: { code: 'UNAUTHENTICATED', http: {
+          status: 401,
+        }},
+      });
+
       const res = await Lyric.like(id);
       console.log(res);
       return {
@@ -85,6 +106,9 @@ export const resolver = {
     }
   },
   Lyric: {
+    likes: (parentValue) => {
+      return parentValue.likedBy.length;
+    },
     song: async (parentValue) => {
       const lyric = await Lyric.findById(parentValue.id).populate('song');
       return lyric.song;
