@@ -14,12 +14,12 @@ const SongSchema = new Schema({
   }]
 });
 
-SongSchema.statics.addLyric = function(id, content) {
+SongSchema.statics.addLyric = function(id, createdBy, content) {
   const Lyric = mongoose.model('lyric');
 
   return this.findById(id)
     .then(song => {
-      const lyric = new Lyric({ content, song })
+      const lyric = new Lyric({ content, song, createdBy })
       song.lyrics.push(lyric)
       return Promise.all([lyric.save(), song.save()])
         .then(([lyric, song]) => [lyric, song]);
